@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+
 
 function App() {
+  let api = `${process.env.API_key}`;
+
+  const [quote, setQuote] = useState('');
+
+  async function apiFun() {
+    try {
+      let response = await fetch(api);
+      let res = await response.json()
+      if (!response.ok) {
+        throw new Error(setQuote("Due to network issue quotes are not available."));
+      }
+      setQuote(res.slip.advice);
+
+    } catch (e) {
+      console.log(e);
+      setQuote("Due to network issue quotes are not available.")
+    }
+  }
+
+  useEffect(() => {
+    apiFun()
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="quoteMain">
+        <div className="quoteInner">
+          <p>{quote}</p>
+          <button type="button" className="btn" onClick={() => apiFun()}>Generate</button>
+        </div>
+      </div>
+    </>
   );
 }
 
