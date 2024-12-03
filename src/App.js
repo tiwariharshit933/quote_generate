@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 
 function App() {
-  let api = `${process.env.API_key}`;
+  let api = "https://api.adviceslip.com/advice";
 
   const [quote, setQuote] = useState('');
 
